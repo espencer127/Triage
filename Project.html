@@ -1,4 +1,602 @@
 <html>
-<head></head>
-<body>Things go here</body>
+<head>
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PrintArea/2.4.1/jquery.PrintArea.js"></script>
+<script src="jquery.js"></script>
+<script src="jquery.PrintArea.js"></script>
+
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+!-->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<style>
+.w3-container:after,.w3-container:before,.w3-panel:after,.w3-panel:before,.w3-row:after,.w3-row:before,.w3-row-padding:after,.w3-row-padding:before,
+.w3-cell-row:before,.w3-cell-row:after,.w3-clear:after,.w3-clear:before,.w3-bar:before,.w3-bar:after{content:"";display:table;clear:both}
+
+.w3-container,.w3-panel{padding:0.01em 16px;margin-top:16px;margin-bottom:16px;margin-left:2.5%;width:95%;}
+
+.w3-row-padding,.w3-row-padding>.w3-half,.w3-row-padding>.w3-third,.w3-row-padding>.w3-twothird,.w3-row-padding>.w3-threequarter,.w3-row-padding>.w3-quarter,.w3-row-padding>.w3-col{padding:.01em 8px}
+
+.w3-col,.w3-half,.w3-third,.w3-twothird,.w3-threequarter,.w3-quarter{float:left;width:100%}
+
+@media (min-width:100px){.w3-col.m1{width:8.33333%}.w3-col.m2{width:16.66666%}.w3-col.m3,.w3-quarter{width:24.99999%}.w3-col.m4,.w3-third{width:33.33333%}
+
+.w3-row-padding,.w3-row-padding>.w3-half,.w3-row-padding>.w3-third,.w3-row-padding>.w3-twothird,.w3-row-padding>.w3-threequarter,.w3-row-padding>.w3-quarter,.w3-row-padding>.w3-col{padding:0 8px}
+
+.btn {
+  white-space:normal;
+}
+
+  div #clock {
+  font-size:28px;
+}
+
+.radio input[type="radio"] {
+  float:none;
+  margin-left:5px;
+}
+
+body {
+    background-color:#C5C1C0;
+    font-family: 'Open Sans', sans-serif;
+}
+    
+.w3-container{
+    background-color:white;
+}
+
+
+</style>
+
+<script>
+
+$(document).ready(function(){
+    $("#printButton").click(function(){
+        var mode = 'iframe'; //popup
+        var close = mode == "popup";
+        var options = { mode : mode, popClose : close};
+        $("div.printableArea").printArea( options );
+    });
+});
+</script>
+
+<script>
+
+  var possibleRepairs = [
+    {
+      area: "Front wheel",
+      repair: "out of true",
+      isNeeded: false,
+    },
+    {
+      area: "Front hub",
+      repair: "needs tightening",
+      isNeeded: false
+    },
+    {
+      area: "Front brake",
+      repair: "needs repair",
+      isNeeded: false
+    },
+    {
+      area: "Headset",
+      repair: "needs tightening",
+      isNeeded: false
+    },
+    {
+      area: "Bottom Bracket",
+      repair: "needs tightening",
+      isNeeded: false
+    },
+    {
+      area: "Rear wheel",
+      repair: "out of true",
+      isNeeded: false
+    },
+    {
+      area: "Rear hub",
+      repair: "needs tightening",
+      isNeeded: false
+    },
+    {
+      area: "Rear brake",
+      repair: "needs repair",
+      isNeeded: false
+    },
+    {
+      area: "Front shifting",
+      repair: "needs repair",
+      isNeeded: false
+    },
+    {
+      area: "Rear shifting",
+      repair: "needs repair",
+      isNeeded: false
+    },
+    {
+      area: "Front tire",
+      repair: "needs replacing",
+      isNeeded: false
+    },
+    {
+      area: "Front tube",
+      repair: "needs replacing",
+      isNeeded: false
+    },
+    {
+      area: "Pedals",
+      repair: "not present/need replacing",
+      isNeeded: false
+    }
+  ];
+  /*
+    function sendToPrintArea() {
+      var arrayOfVolunteers = [];
+      var theName;
+      document.getElementById("theName").style.color = "red";
+      theName = document.getElementById("theName");
+      arrayOfVolunteers.push(theName);
+      document.getElementById('printArea').innerHTML = theName + ".";
+    }
+    
+        function printThings() {
+      var prtContent = document.getElementById("theseRepairsNeeded");
+      var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+      WinPrint.document.write(prtContent.innerHTML);
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+    }
+    */
+    
+
+  
+  function initPage() {
+    document.getElementById('repairsGoHere').innerHTML = "We'll need repairs soon!";
+    document.getElementById("button1").addEventListener("click", function() {
+      addRepair("0", false);
+      buttChangeColor("button1","btn-success","button2","btn-default");
+    });
+    document.getElementById("button2").addEventListener("click", function() {
+      addRepair("0", true);
+      buttChangeColor("button2","btn-danger","button1","btn-default");
+    });
+    document.getElementById("button3").addEventListener("click", function() {
+      addRepair("1", false);
+      buttChangeColor("button3","btn-success","button4","btn-default");
+    });
+    document.getElementById("button4").addEventListener("click", function() {
+      addRepair("1", true);
+      buttChangeColor("button4","btn-danger","button3","btn-default");
+    });
+    document.getElementById("button5").addEventListener("click", function() {
+      addRepair("2", false);
+      buttChangeColor("button5","btn-success","button6","btn-default");
+    });
+    document.getElementById("button6").addEventListener("click", function() {
+      addRepair("2", true);
+      buttChangeColor("button6","btn-danger","button5","btn-default");
+    });
+    document.getElementById("button7").addEventListener("click", function() {
+      addRepair("3", false);
+      buttChangeColor("button7","btn-success","button8","btn-default");
+    });
+    document.getElementById("button8").addEventListener("click", function() {
+      addRepair("3", true);
+      buttChangeColor("button8","btn-danger","button7","btn-default");
+    });
+    document.getElementById("button9").addEventListener("click", function() {
+      addRepair("4", false);
+      buttChangeColor("button9","btn-success","button10","btn-default");
+    });
+    document.getElementById("button10").addEventListener("click", function() {
+      addRepair("4", true);
+      buttChangeColor("button10","btn-danger","button9","btn-default");
+    });
+    document.getElementById("button11").addEventListener("click", function() {
+      addRepair("5", false);
+      buttChangeColor("button11","btn-success","button12","btn-default");
+      //illuminateRow("button14","button15");
+    });
+    document.getElementById("button12").addEventListener("click", function() {
+      addRepair("5", true);
+      buttChangeColor("button12","btn-danger","button11","btn-default");
+      //illuminateRow("button14","button15");
+    });
+    document.getElementById("button13").addEventListener("click", function() {
+      addRepair("6", false);
+      buttChangeColor("button13","btn-success","button14","btn-default");
+    });
+    document.getElementById("button14").addEventListener("click", function() {
+      addRepair("6", true);
+      buttChangeColor("button14","btn-danger","button13","btn-default");
+    });
+    document.getElementById("button15").addEventListener("click", function() {
+      addRepair("7", false);
+      buttChangeColor("button15","btn-success","button16","btn-default");
+    });
+    document.getElementById("button16").addEventListener("click", function() {
+      addRepair("7", true);
+      buttChangeColor("button16","btn-danger","button15","btn-default");
+    });
+    
+    document.getElementById("button17").addEventListener("click", function() {
+      addRepair("8", false);
+      buttChangeColor("button17","btn-success","button18","btn-default");
+    });
+    document.getElementById("button18").addEventListener("click", function() {
+      addRepair("8", true);
+      buttChangeColor("button18","btn-danger","button17","btn-default");
+    });
+    
+    document.getElementById("button19").addEventListener("click", function() {
+      addRepair("9", false);
+      buttChangeColor("button19","btn-success","button20","btn-default");
+    });
+    document.getElementById("button20").addEventListener("click", function() {
+      addRepair("9", true);
+      buttChangeColor("button20","btn-danger","button19","btn-default");
+    });
+    
+    document.getElementById("button21").addEventListener("click", function() {
+      addRepair("10", false);
+      buttChangeColor("button21","btn-success","button22","btn-default");
+    });
+    document.getElementById("button22").addEventListener("click", function() {
+      addRepair("10", true);
+      buttChangeColor("button22","btn-danger","button21","btn-default");
+    });
+    
+    document.getElementById("button23").addEventListener("click", function() {
+      addRepair("11", false);
+      buttChangeColor("button23","btn-success","button24","btn-default");
+    });
+    document.getElementById("button24").addEventListener("click", function() {
+      addRepair("11", true);
+      buttChangeColor("button24","btn-danger","button23","btn-default");
+    });
+    
+    document.getElementById("button25").addEventListener("click", function() {
+      addRepair("12", false);
+      buttChangeColor("button25","btn-success","button26","btn-default");
+    });
+    document.getElementById("button26").addEventListener("click", function() {
+      addRepair("12", true);
+      buttChangeColor("button26","btn-danger","button25","btn-default");
+    });
+  }
+
+  
+  function changeColor(where, color, opposite, ind) {
+    document.getElementById(opposite).style.color = "black";
+    document.getElementById(where).style.color = color;
+  }
+  
+  function buttChangeColor(where, newClass, opposite, newClass2) {
+    document.getElementById(where).className = "btn " + newClass;
+    document.getElementById(opposite).className = "btn " + newClass2;
+    
+  }
+  
+  function addRepair(here, needed) {
+    possibleRepairs[here].isNeeded = needed;
+    var filteredArray = possibleRepairs.filter(ind => ind.isNeeded).map(ind => ind.area + " " + ind.repair).join("\<br\>");
+    document.getElementById('repairsGoHere').innerHTML = filteredArray;
+  }
+
+  //Illuminate the next row if it's not already been chosen
+  function illuminateRow(button1,button2) {
+          document.getElementById(button1).className = "btn btn-primary";
+          document.getElementById(button2).className = "btn btn-primary";
+      
+      
+      
+  }
+ 
+
+  function displayClock() {
+    var time = new Date();
+    var hrs = time.getHours();
+    var min = time.getMinutes();
+    var themon = (time.getMonth() + 1);
+    var theday = time.getDate();
+    if (hrs > 12) {
+      hrs = hrs - 12;
+    }
+    if ((min == 0)) {
+      min = "00";
+    }
+    if ((min < 10) && (min != 0)) {
+      min = "0" + min;
+    }
+    document.getElementById('clock').innerHTML = themon + '/' + theday + "    " + hrs + ':' + min;
+  }
+</script>
+
+</head>
+
+<body onload="initPage()">
+  <class="container">
+      
+      <div class="w3-container">
+        <h1>Bike Triage Checklist</h1>
+    
+        <div id="clock">
+          <script language="javascript">
+            setInterval(displayClock, 500);
+          </script>
+        </div>
+   
+        <div class="row">
+            <div class="w3-third">
+            <h3>Front End</h3>
+            </div>
+        </div>
+        
+        
+        <div class="row">    
+        <div class="w3-third">
+        <p>Front Wheel</p>
+        </div>
+        
+        <div class="w3-third">
+        <p><button type="button" id="button1" class="btn btn-default">True
+        </button></p>
+        </div>
+        
+        <div class="w3-third">
+        <p><button type="button" id="button2" class="btn btn-default">Out of true
+        </button></p>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="w3-third">
+        <p>Front Hub</p>
+        </div>
+        
+        <div class="w3-third">
+        <p><button type="button" id="button3" class="btn btn-default">Feels fine
+        </button></p>
+        </div>
+        
+        <div class="w3-third">
+        <p><button type="button" id="button4" class="btn btn-default">Bearings are loose
+        </button></p>
+        </div>
+        </div>
+        
+        <div class="row">
+        <div class="w3-third">
+        <p>Front Brake</p>
+        </div>
+        
+        <div class="w3-third">
+        <p><button type="button" id="button5" class="btn btn-default">Acceptable</button></p>
+        </div>
+        <div class="w3-third">
+        <p><button type="button" id="button6" class="btn btn-default">Needs work
+        </button></p>
+        </div>
+        </div>
+        
+        <div class="row">
+            <div class="w3-third">
+        <p>Headset</p>
+      </div>
+      
+      <div class="w3-third">
+        <p><button type="button" id="button7" class="btn btn-default">Feels fine
+        </button></p>
+      </div>
+      
+      <div class="w3-third">
+        <p><button type="button" id="button8" class="btn btn-default">Bearings are loose
+        </button></p>
+      </div>
+    </div>
+
+
+    <br>
+    <div class="row">
+        <div class="w3-third">
+        <h3>Mid Drive</h3>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="w3-third">
+          <p>Bottom Bracket</p>
+      </div>
+      
+      <div class="w3-third">
+        <button type="button" id="button9" class="btn btn-default">Feels fine
+        </button>
+      </div>
+      <div class="w3-third">
+        <button type="button" id="button10" class="btn btn-default">Bearings are loose
+        </button>
+      </div>
+    </div>
+
+
+
+    <br>
+    <div class="row">
+      <div class="w3-third">
+        <h3>Rear End</h3>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="w3-third">
+            <p>Rear Wheel</p>
+            </div>
+            
+            
+            <div class="w3-third">
+            <button type="button" id="button11" class="btn btn-default">True
+        </button>
+        </div>
+        <div class="w3-third">
+            <button type="button" id="button12" class="btn btn-default">Out of True</button>
+            </div>
+            </div>
+            
+            <div class="row">
+        <div class="w3-third">
+            <p>Rear Hub</p>
+            </div>
+            
+            <div class="w3-third">
+            <button type="button" id="button13" class="btn btn-default">Feels fine</button>
+            </div>
+            <div class="w3-third">
+                <button type="button" id="button14" class="btn btn-default">Bearings are loose</button>
+            </div>
+            </div>
+            
+            <div class="row">
+            <div class="w3-third">
+            <p>Rear Brake</p>
+      </div>
+      
+      <div class="w3-third">
+        <button type="button" id="button15" class="btn btn-default">Acceptable</button>
+      </div>
+      
+      <div class="w3-third">
+        <button type="button" id="button16" class="btn btn-default">Needs work</button>
+      </div>
+    </div>
+
+    
+
+    
+<br>
+    <div class="row">
+      <div class="w3-third">
+        <h3>Shifting</h3>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="w3-third">
+        <p>Front Shifting</p>
+        </div>
+        <div class="w3-third">
+        <button type="button" id="button17" class="btn btn-default">Works fine</button>
+        </div>
+        <div class="w3-third">
+            <button type="button" id="button18" class="btn btn-default">Needs work</button>
+            
+        </div>
+        </div>
+        
+        
+        
+        <div class="row">
+            <div class="w3-third">
+        <p>Rear Shifting</p>
+        </div>
+   
+        <div class="w3-third">
+        <button type="button" id="button19" class="btn btn-default">Works fine</button>
+        </div>
+        <div class="w3-third">
+        <button type="button" id="button20" class="btn btn-default">Needs work</button>
+      </div>
+    </div>
+
+
+
+
+<br>
+    <div class="row">
+      <div class="w3-third">
+        <h3>Wear Items</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="w3-third">
+        <p>Front Tire</p>
+        </div>
+        <div class="w3-third">
+            <button type="button" id="button21" class="btn btn-default">It's fine</button>
+            </div>
+            <div class="w3-third">
+                <button type="button" id="button22" class="btn btn-default">Needs replacing</button>
+                </div>
+                </div>
+        
+    <div class="row">
+    <div class="w3-third">
+        <p>Front Tube</p>
+    </div>
+    <div class="w3-third">
+        <button type="button" id="button23" class="btn btn-default">It holds air</button>
+    </div>
+    <div class="w3-third">
+        <button type="button" id="button24" class="btn btn-default">It's not holding air</button>
+    </div>
+    </div>
+    
+    <div class="row">
+    <div class="w3-third">
+        <p>Pedals</p>
+      </div>
+      <div class="w3-third">
+        <button type="button" id="button25" class="btn btn-default">Acceptable</button>
+      </div>
+      <div class="w3-third">
+        <button type="button" id="button26" class="btn btn-default">Not present/needs replacing</button>
+      </div>
+    </div>
+
+
+
+    
+    
+    <br><br>
+    <div class="printableArea">
+    <div class="row text-left" id="theseRepairsNeeded">
+      <div class="col-md-3"></div>
+      <div class="col-md-8 text-left">
+        <h3>Here's what we found:</h3>
+      </div>
+    </div>
+    <div class="row text-left">
+      <div class="col-md-3"></div>
+      <div class="col-md-8" id="repairsGoHere"></div>
+    </div>
+    </div>
+    
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <button type="button" class="btn btn-block btn-primary printButton"  id='printButton' value='Print'>Print It
+          </button>
+      </div>
+    </div>
+
+<br><br>
+
+</div>
+
+</class="container">
+</body>
 </html>
